@@ -5,7 +5,7 @@ export const Header = () => {
         <>
             <AppBar position = "statik" >
                 <Toolbar>
-                    <Typography variant = "h6" flexGrow = "1">AI Assistant</Typography>
+                    <Typography variant = "h6" flexGrow = "2">AI Assistant</Typography>
                     <Avatar />
                 </Toolbar>
 
