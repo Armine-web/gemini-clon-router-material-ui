@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { NavLink } from "react-router"
 import { Fade, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText} from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import HistoryIcon from '@mui/icons-material/History'
 import SettingsIcon from '@mui/icons-material/Settings'
 import AddIcon from '@mui/icons-material/Add';
+
 
 export const SideBar = () => {
     const [extended, setExtended] = useState(false);
@@ -13,29 +15,31 @@ export const SideBar = () => {
         <Drawer  
         variant="permanent"
         sx = {{
-           "& .MuiDrawer-paper": {
             width: extended ? 250 : 80,
+            flexShrink: 0,
+           "& .MuiDrawer-paper": {
+                width: extended ? 250 : 80,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                height: "100vh",
                 borderRight: "none",
                 backgroundColor: "#f0f0f0",
                 overflow: "hidden",
-                padding: "10px"
+                padding: "10px",
+                transition: "width 0.15s ease, padding 0.3s ease",
             }
             
 
 
         }}
         >
-            <List>
+            <List >
                 <ListItem button onClick = { () => setExtended(!extended) }>
                     <ListItemIcon>
                         <MenuIcon />
                     </ListItemIcon>
                 </ListItem>
-                <ListItem button>
+                <ListItem component = { NavLink } to="/">
                     <ListItemIcon>
                         <AddIcon />
                     </ListItemIcon>
@@ -49,7 +53,7 @@ export const SideBar = () => {
             <Divider />
 
             <List>
-                <ListItem button>
+                <ListItem component = { NavLink } to="/help">
                     <ListItemIcon>
                         <HelpOutlineIcon />
                     </ListItemIcon>
@@ -58,8 +62,8 @@ export const SideBar = () => {
                         <ListItemText primary= "Help" />
                     </Fade>
                 </ListItem>
-                <ListItem>
-                    <ListItemIcon button>
+                <ListItem  component = { NavLink } to="/history">
+                    <ListItemIcon>
                         <HistoryIcon />
                     </ListItemIcon>
                     <Fade in={extended}  style={{ transformOrigin: '0 0 0' }}
@@ -67,8 +71,8 @@ export const SideBar = () => {
                         <ListItemText primary= "History" />
                     </Fade>
                 </ListItem>
-                <ListItem>
-                    <ListItemIcon button>
+                <ListItem component = { NavLink } to="/settings">
+                    <ListItemIcon>
                         <SettingsIcon />
                     </ListItemIcon>
                     <Fade in={extended}  style={{ transformOrigin: '0 0 0' }}

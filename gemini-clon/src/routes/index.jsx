@@ -1,5 +1,10 @@
 import { createBrowserRouter } from "react-router";
+
 import { Navigation } from "../layouts/navigation/navigation";
+
+import { Settings } from "../pages/settings";
+import { Chat } from "../pages/chat";
+import { NotFoundPage } from "../pages/404";
 
 export const routes = createBrowserRouter([
     {
@@ -11,16 +16,20 @@ export const routes = createBrowserRouter([
                 element: <div>Chat</div>,
             },
             {
-                path: "help",
-                element: <div>Help</div>,
+                path: "history",
+                element: <History/>,
             },
             {
-                path: "setings",
-                element: <div>Settings</div>,
+                path: "help",
+                element: <Chat />,
+            },
+            {
+                path: "settings",
+                element: <Settings />,
             },
             {
                 path: "*",
-                element: <div>404</div>,
+                element: <NotFoundPage />,
             }
         ]
     },

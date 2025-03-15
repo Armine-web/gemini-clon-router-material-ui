@@ -3,9 +3,9 @@ import { AppBar , Toolbar, Typography, Avatar } from "@mui/material"
 export const Header = () => {
     return (
         <>
-            <AppBar position = "statik" >
+            <AppBar position="static" color="#FFF" boxShadow="none">
                 <Toolbar>
-                    <Typography variant = "h6" flexGrow = "2">AI Assistant</Typography>
+                    <Typography variant = "h6" flexGrow = "1">AI Assistant</Typography>
                     <Avatar />
                 </Toolbar>
 

@@ -9,9 +9,17 @@ export const Navigation = () => {
     return (
         <>
             <CssBaseline />
-                <div>
+                <div className="app">
                     <SideBar />
-                    <Box>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            height: "100%",
+                            width: "100%",
+                            overflow: "hidden",
+                        }}
+                        >
                         <Header />
                         <Outlet />
                     </Box>
