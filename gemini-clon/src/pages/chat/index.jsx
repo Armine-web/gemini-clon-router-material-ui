@@ -1,6 +1,12 @@
-import { useState } from "react";
-import { Box, TextField, Typography, IconButton } from "@mui/material";
-
+import { useSelector, useDispatch } from "react-redux";
+import { addRecentSearch } from "../../redux/chat-actions";
+import {
+  Box,
+  TextField,
+  Typography,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 
 import ExploreIcon from "@mui/icons-material/Explore";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
@@ -8,7 +14,9 @@ import ChatIcon from "@mui/icons-material/Chat";
 import CodeIcon from "@mui/icons-material/Code";
 import SendIcon from "@mui/icons-material/Send";
 
-import { PromptCard } from "../../components/cards";
+import { PromptCard } from "../../components/card";
+
+import { setInput, onSent } from "../../redux/chat-actions";
 
 import "./chat.css"
 
@@ -36,14 +44,24 @@ const prompts = [
 ];
 
 export const Chat = () => {
-  const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  const { input, loading, showResult, resultData } = useSelector(
+    (state) => state.chatReducer
+  );
 
-  const handleClick = () => {};
+  const handleSelectPrompt = (text) => {
+    dispatch(setInput(text));
+  };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    dispatch(onSent());
+    if (input.trim()) {
+      dispatch(addRecentSearch(input));
+    }
+  };
 
   const handleChange = (event) => {
-    setMessage(event.target.value);
+    dispatch(setInput(event.target.value));
   };
 
   return (
@@ -52,34 +70,63 @@ export const Chat = () => {
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        width: "100%",
+        width: "80%",
+        margin: "0 auto",
+
       }}
     >
       <Box sx={{ flex: 1, overflowY: "auto", p: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: 500, color: "gray", textAlign: "center", mb: 6, mt: 6 }}>
-          Hello, Dev
-        </Typography>
-        <Typography variant="h5" sx={{ mb: 6, textAlign: "center", }}>
-          How can I help you today?
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            justifyContent: "center"
-
-          }}
-        >
-          {prompts.map(({ text, icon, id }) => (
-            <PromptCard
-              key={id}
-              text={text}
-              icon={icon}
-              onClick={handleClick}
-            />
-          ))}
-        </Box>
+        {!showResult ? (
+          <>
+                  
+            <Typography variant="h4"    sx={{
+              backgroundImage: 'linear-gradient(to right,rgb(95, 191, 255),rgb(254, 138, 123))',
+              WebkitBackgroundClip: 'text',
+              color: 'transparent',
+              fontWeight: 'bold',
+              fontSize: '4.5rem',
+              display: 'inline', 
+            }}>
+              Hello, Dev
+            </Typography>
+            <Typography variant="h5" sx={{ mb: 6, color: "gray", fontSize: '2.5rem'}}>
+              How can I help you today?
+            </Typography>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 200px)",
+                justifyContent: "center", 
+                gap: "20px",
+              }}
+            >
+              {prompts.map(({ text, icon, id }) => (
+                <PromptCard
+                  key={id}
+                  text={text}
+                  icon={icon}
+                  onSelect={handleSelectPrompt}
+                />
+              ))}
+            </Box>
+          </>
+        ) : (
+          <Box sx={{ maxHeight: "70vh", overflowY: "auto" }}>
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  Here's what I found:
+                </Typography>
+                <Typography
+                  variant="body1"
+                  dangerouslySetInnerHTML={{ __html: resultData }}
+                />
+              </>
+            )}
+          </Box>
+        )}
       </Box>
       <Box
         sx={{
@@ -103,20 +150,19 @@ export const Chat = () => {
             variant="outlined"
             placeholder="Enter a prompt here"
             onChange={handleChange}
-            value={message}
+            value={input}
             onKeyUp={(e) => e.key === "Enter" && handleSubmit()}
-            sx={{ "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    border: "none", 
-                  },
-                  "&:hover fieldset": {
-                    border: "none", 
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none", 
-                  },
-                },
-                paddingInline: 2, }}
+            sx={{
+              border: "none",
+              outline: "none",
+              "& .MuiOutlinedInput-root": {
+                border: "none", 
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: "none", 
+              },
+              paddingInline: 2, 
+            }}
           />
           <IconButton onClick={handleSubmit}>
             <SendIcon />

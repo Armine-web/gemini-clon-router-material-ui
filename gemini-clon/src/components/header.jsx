@@ -1,15 +1,16 @@
-import { AppBar , Toolbar, Typography, Avatar } from "@mui/material"
+import { AppBar, Toolbar, Typography, Avatar } from "@mui/material";
+import "./header.css"
 
 export const Header = () => {
-    return (
-        <>
-            <AppBar position="static" color="#FFF" boxShadow="none">
-                <Toolbar>
-                    <Typography variant = "h6" flexGrow = "1">AI Assistant</Typography>
-                    <Avatar />
-                </Toolbar>
+  return (
+    <AppBar position="static" color="#FFF" boxShadow="0">
+      <Toolbar>
+        <Typography flexGrow="1" variant="h6">
+          AI Assistant
+        </Typography>
 
-            </AppBar>
-        </>
-    )
-}
+        <Avatar />
+      </Toolbar>
+    </AppBar>
+  );
+};
